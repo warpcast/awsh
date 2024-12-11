@@ -63,6 +63,19 @@ At a high level:
 2. Uses `ec2-instance-connect:SendSSHPublicKey` to add the key to the host's `~/.ssh/authorized_keys` for the specified user.
 3. Opens a tunnel with the AWS CLI and runs a `ssh` command via that tunnel.
 
+## Development
+
+### Pushing a new release
+
+1. Once ready, simple push a tag in the format of `vX.Y.Z` and a release will automatically be created and an artifact uploaded.
+   ```
+   version=1.2.3; git tag -s -a v$version -m v$version
+   git push --tags
+   ```
+   This will trigger the automated [release workflow](https://github.com/warpcast/awsh/actions/workflows/release.yml).
+
+2. You should then update the [`awsh` Homebrew formula](https://github.com/warpcast/homebrew-formulae/blob/main/awsh.rb) to point at the latest release.
+
 ## License
 
 This project is released under the [MIT license](LICENSE).
