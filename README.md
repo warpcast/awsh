@@ -31,7 +31,7 @@ Your permissions must include a policy similar to the example below:
       "Sid": "EC2InstanceConnect",
       "Action": [
         "ec2:DescribeInstances",
-        "ec2:SendSSHPublicKey",
+        "ec2-instance-connect:SendSSHPublicKey",
         "ec2-instance-connect:OpenTunnel"
       ],
       "Effect": "Allow",
@@ -60,7 +60,7 @@ The following example grants EC2 Connect Access to all instances with a tag of `
       "Sid": "ConnectToInstancesWithTag",
       "Effect": "Allow",
       "Action": [
-        "ec2:SendSSHPublicKey",
+        "ec2-instance-connect:SendSSHPublicKey",
         "ec2-instance-connect:OpenTunnel"
       ],
       "Resource": "arn:aws:ec2:*:*:instance/*",
