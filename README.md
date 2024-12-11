@@ -9,7 +9,7 @@
 `awsh` is a simple Bash script that can run anywhere, but it expects the following executables in your `PATH`:
 
 - `bash` — to run the script itself. Should already be on the vast majority of systems
-- `aws` — note: make sure you are already authenticated before attempting to use `awsh`
+- `aws` — `awsh` assumes that `aws` will be able to authenticate with your current shell environment
 - `fzf` —  only if you don't specify an explict username and host to connect to
 - `ssh`
 
@@ -19,8 +19,10 @@ If you install via Homebrew, dependencies are installed automatically.
 
 Your local environment needs to be set up so that you can be authenticated in IAM with the following permissions:
 
-Your permissions must include the policy below
-** WARNING: Grants access to all instances. You likely want to introduce conditions.** See below.
+Your permissions must include a policy similar to the example below:
+
+**WARNING: Below example grants access to all instances. You likely want to introduce conditions (see second example below).**
+
 ```json
 {
   "Version": "2012-10-17",
