@@ -4,22 +4,78 @@
 
 `awsh` behaves like `ssh` but uses AWS IAM for authentication.
 
-## Installation
-
-### Requirements
+## Requirements
 
 `awsh` is a simple Bash script that can run anywhere, but it expects the following executables in your `PATH`:
 
-- `aws`
-- `fzf`
+- `bash` — to run the script itself. Should already be on the vast majority of systems
+- `aws` — note: make sure you are already authenticated before attempting to use `awsh`
+- `fzf` —  only if you don't specify an explict username and host to connect to
 - `ssh`
 
-If you install via Homebrew, these dependencies are taken care of.
+If you install via Homebrew, dependencies are installed automatically.
 
-### via Homebrew/Linuxbrew
+### Authentication
+
+Your local environment needs to be set up so that you can be authenticated in IAM with the following permissions:
+
+Your permissions must include the policy below
+** WARNING: Grants access to all instances. You likely want to introduce conditions.** See below.
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "EC2InstanceConnect",
+      "Action": [
+        "ec2:DescribeInstances",
+        "ec2-instance-connect:SendSSHPublicKey"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+If you want to constrain which instances the user can connect to, add a condition.
+The following example grants EC2 Connect Access to all instances with a tag of `ssh-access = true`.
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DescribeInstances",
+      "Action": [
+        "ec2:DescribeInstances"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectToInstancesWithTag",
+      "Effect": "Allow",
+      "Action": "ec2:SendSSHPublicKey",
+      "Resource": "arn:aws:ec2:*:*:instance/*",
+      "Condition": {
+        "StringEquals": {
+          "ec2:ResourceTag/ssh-access": "true"
+        }
+      }
+    }
+  ]
+}
+```
+
+## Installation
+
+### Homebrew/Linuxbrew
 ```
 brew install warpcast/formulae/awsh
 ```
+
+### Generic *nix
 
 Otherwise, you can run:
 ```bash
