@@ -30,16 +30,9 @@ Otherwise, you can run:
 
 ### Connect to any instance
 
-If you specify no arguments, `awsh` will prompt with a fuzzy search for an instance:
+If you specify no arguments, `awsh` will allow you to select from a list of accessible instances:
 
-```
-$ awsh
-No user@hostname specified, fetching available instances...
-i-00c3b7b05ca2906fe     10.0.5.51       job-processor
-i-05a13440331eeb2df     10.0.5.84       app
-i-0856ed186c2f0416d     10.0.5.96       ws
-3/3 ─────────────────────────────────────────────────
-```
+![awsh demo](demo.gif)
 
 `awsh` assumes you are attempting to SSH as `ec2-user` in this mode. If you want to connect as a specific user, see below, or set the `SSH_USER` environment variable.
 
