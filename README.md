@@ -16,12 +16,12 @@
 
 If you install via Homebrew, these dependencies are taken care of.
 
-**via Homebrew/Linuxbrew**
+### via Homebrew/Linuxbrew
 ```
 brew install warpcast/formulae/awsh
 ```
 
-Otherwise just copy `awsh` into your PATH (`/usr/local/bin` / etc.) and make sure it's executable.
+Otherwise just copy `awsh` into your PATH (`/usr/local/bin` or elsewhere) and make sure it's executable.
 
 ## Usage
 
@@ -32,10 +32,10 @@ If you specify no arguments, `awsh` will prompt with a fuzzy search for an insta
 ```
 $ awsh
 No user@hostname specified, fetching available instances...
-i-00c3b7b05ca2906fe     10.0.5.51       job-processor                                                                                                                    │
-i-05a13440331eeb2df     10.0.5.84       app                                                                                                                              │
-i-0856ed186c2f0416d     10.0.5.96       ws                                                                                                                               │
-3/3 ────────────────────────────────────────────────
+i-00c3b7b05ca2906fe     10.0.5.51       job-processor
+i-05a13440331eeb2df     10.0.5.84       app
+i-0856ed186c2f0416d     10.0.5.96       ws
+3/3 ─────────────────────────────────────────────────
 ```
 
 `awsh` assumes you are attempting to SSH as `ec2-user` in this mode. If you want to connect as a specific user, see below, or set the `SSH_USER` environment variable.
@@ -50,10 +50,7 @@ awsh [options] user@host [command [argument ...]]
 
 ## Caveats
 
-A core assumption with using AWS EC2 Instance Connect (and AWS in general) is that traffic within their private network is **not** susceptible to IP spoofing.
-Therefore host verification isn't practically useful—and in an environment with EC2 instances constantly cycling through a pool of reused IPs—it is annoying to maintain a `~/.ssh/known_hosts` file.
-For this reason, `awsh` takes an opinionated approach by disabling host key verification.
-You will see a warning emitted every time you run `awsh` saying the host key was permanently added, but it can be ignored since the host key wasn't actually saved–it was written to `/dev/null`).
+`awsh` assumes that you trust AWS. If you don't, don't use it.
 
 ## How it works
 
