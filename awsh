@@ -70,6 +70,10 @@ fi
 
 echo "Generating one-time-use SSH key..." >&2
 tmp_key_file="$(mktemp)"
+cleanup() {
+  rm -rf "$tmp_key_file" >&2
+}
+trap cleanup HUP INT QUIT TERM EXIT
 ssh-keygen -t ed25519 -f "$tmp_key_file" -C "" -P "" -q <<<y >/dev/null 2>&1
 pub_key="$(cat "${tmp_key_file}.pub")"
 
