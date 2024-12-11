@@ -1,6 +1,6 @@
 # `awsh`
 
-`awsh` is `ssh` for [AWS](https://aws.amazon.com/) -- authenticate and open a secure shell on your instances without SSH keys.
+`awsh` is `ssh` for [AWS](https://aws.amazon.com/) – authenticate and open a secure shell on your instances without SSH keys.
 
 `awsh` behaves like `ssh` but uses AWS IAM for authentication.
 
@@ -47,6 +47,21 @@ If you know the username + hostname you want to connect with, specify the same c
 ```
 awsh [options] user@host [command [argument ...]]
 ```
+
+## Caveats
+
+A core assumption with using AWS EC2 Instance Connect (and AWS in general) is that traffic within their private network is **not** susceptible to IP spoofing.
+Therefore host verification isn't practically useful–and in an environment with EC2 instances constantly cycling through a pool of reused IPs–it is annoying to maintain a `~/.ssh/known_hosts` file.
+For this reason, `awsh` takes an opinionated approach by disabling host key verification.
+You will see a warning emitted every time you run `awsh` saying the host key was permanently added, but it can be ignored since the host key wasn't actually saved–it was written to `/dev/null`).
+
+## How it works
+
+At a high level:
+
+1. Generates a temporary (one-time-use) SSH key.
+2. Uses `ec2-instance-connect:SendSSHPublicKey` to add the key to the host's `~/.ssh/authorized_keys` for the specified user.
+3. Opens a tunnel with the AWS CLI and runs a `ssh` command via that tunnel.
 
 ## License
 
