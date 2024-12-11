@@ -21,7 +21,10 @@ If you install via Homebrew, these dependencies are taken care of.
 brew install warpcast/formulae/awsh
 ```
 
-Otherwise just copy `awsh` into your PATH (`/usr/local/bin` or elsewhere) and make sure it's executable.
+Otherwise, you can run:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/warpcast/awsh/refs/heads/main/install.sh)"
+```
 
 ## Usage
 
