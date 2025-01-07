@@ -36,7 +36,6 @@ done
 
 # If no host specified, offer a fuzzy selection
 if [ -z "${username_host}" ]; then
-  echo "No user@hostname specified, fetching available instances..." >&2
   instances="$(aws ec2 describe-instances --filter Name=instance-state-name,Values=running --output json | jq -r '.Reservations[].Instances[] | .InstanceId + "\t" + .PrivateIpAddress + "\t" + (.Tags[]? | select(.Key == "Name") | .Value // "(No name tag)")')"
   ssh_host="$(echo "$instances" | sort -rk2 | fzf | cut -f2)"
   ssh_user="${SSH_USER:-ec2-user}"
